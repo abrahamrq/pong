@@ -380,13 +380,17 @@ void displayBall(){
 
 void display(){
   glPushMatrix();
-  glRotatef(vertical, 0.0, 0.0, 1.0);
   glRotatef(ball.getXTranslate() / 10, 0, 1, 0);
   // glRotatef(ball.getYTranslate() / -10, 1, 0, 0);
   glClear(GL_COLOR_BUFFER_BIT);
-  displayTable();
-  displayPlayersRaquets();
-  displayBall();
+  if (!start){
+    displayHome();
+  } else {
+    glRotatef(vertical, 0.0, 0.0, 1.0);
+    displayTable();
+    displayPlayersRaquets();
+    displayBall();
+  }
   glutSwapBuffers();
   glPopMatrix();
 }
