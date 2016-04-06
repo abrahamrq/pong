@@ -288,8 +288,8 @@ void displayBall(){
 
 void display(){
   glPushMatrix();
-  // glRotatef(ball.getXTranslate() / 10, 0, 1, 0);
-  // glRotatef(ball.getYTranslate() / -10, 1, 0, 0);
+  glRotatef(ball.getXTranslate() / 10, 0, 1, 0);
+  glRotatef(ball.getYTranslate() / -10, 1, 0, 0);
   glClear(GL_COLOR_BUFFER_BIT);
   displayTable();
   displayPlayersRaquets();
