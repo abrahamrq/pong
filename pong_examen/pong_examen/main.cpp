@@ -13,10 +13,12 @@
 #include <iostream>
 #include <sstream>
 #include "imageloader.h"
-// #include "Sound.h"
+#include "Sound.h"
 
 
-// Sound die = Sound("/Users/taniagarridosalido/Dropbox/ITESM-ITC Decimo Semestre/Graficas/pong/pong_examen/pong_examen/sounds/die.wav");
+Sound die = Sound("/Users/taniagarridosalido/Dropbox/ITESM-ITC Decimo Semestre/Graficas/pong/pong_examen/pong_examen/sounds/die.wav");
+const int TEXTURE_COUNT=8;
+static GLuint texName[TEXTURE_COUNT];
 
 ///////////////////////////////////CLASSES//////////////////////////////////////
 class Raquet{
@@ -41,15 +43,12 @@ class Raquet{
     void setYTranslate(double y_translate) { this->y_translate = y_translate; }
         
     void display(){
-      glPushMatrix();
-      glTranslated(this->x_translate, y_translate, 0);
-      glScalef(.3, 2, 0.1);
-      glColor3ub(0, 0, 0);
-      glutSolidCube(1);
-      glColor3ub(255, 0, 0);
-      glLineWidth(1);
-      glutWireCube(1);
-      glPopMatrix();
+        //glBindTexture(GL_TEXTURE_2D, texName[4]);
+        //glPushMatrix();
+        //glTranslated(this->x_translate, y_translate, 0);
+        //glScalef(.3, 2, 0.1);
+        //glutSolidCube(1);
+        //glPopMatrix();
     }
 };
 
@@ -146,12 +145,12 @@ class Ball{
     void setPlayerRightScore(int player_right_score) { this->player_right_score = player_right_score; }
     
     void display(){
-      glPushMatrix();
+      /*glPushMatrix();
       glTranslated(this->x_translate, this->y_translate, 0);
       glScalef(this->scale, this->scale, 0);
       glColor3ub(0, 0, 0);
       glutSolidSphere(1, 20, 20);
-      glPopMatrix();
+      glPopMatrix();*/
     }
     
     void resetGame(){
@@ -160,7 +159,7 @@ class Ball{
     }
     
     void resetPosition(){
-      // die.PlaySound();
+      die.PlaySound();
       this->x_translate = 0;
       this->y_translate = 0;
       this->speed_x = .01;
@@ -171,7 +170,7 @@ class Ball{
       std::ostringstream buffer;
       buffer << this->player_left_score;
       std::string player_left_score_string = buffer.str();
-      glColor3ub(255, 255, 255);
+      glColor3ub(0, 0, 0);
       glRasterPos2f(-2, 3);
       for(int k = 0; k < player_left_score_string.size(); k++){
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, player_left_score_string[k]);
@@ -179,11 +178,21 @@ class Ball{
       std::ostringstream buffer2;
       buffer2 << this->player_right_score;
       std::string player_right_score_string = buffer2.str();
-      glColor3ub(255, 255, 255);
+      glColor3ub(0, 0, 0);
       glRasterPos2f(2, 3);
       for(int k = 0; k < player_right_score_string.size(); k++){
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, player_right_score_string[k]);
       }
+        std::ostringstream buffer3;
+        buffer3 << "Tania Garrido, Abraham Rodríguez";
+        std::string names = buffer3.str();
+        glColor3ub(0, 0, 0);
+        glRasterPos2f(1, 3);
+        for(int k = 0; k < names.size(); k++){
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, names[k]);
+        }
+        glColor3ub(255, 255, 255);
+
     }
     
     void move(){
@@ -229,9 +238,7 @@ bool paused = false, started = false;
 Player players[2];
 Ball ball;
 std::string fullPath = __FILE__;
-const int TEXTURE_COUNT=7;
-static GLuint texName[TEXTURE_COUNT];
-float vertical = 0.0;
+float vertical = 90.0;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -306,6 +313,8 @@ void initRendering()
     image = loadBMP(ruta);loadTexture(image,i++);
     sprintf(ruta,"%s%s", fullPath.c_str() , "texturas/RaquetaNina.bmp");
     image = loadBMP(ruta);loadTexture(image,i++);
+    sprintf(ruta,"%s%s", fullPath.c_str() , "texturas/pizza.bmp");
+    image = loadBMP(ruta);loadTexture(image,i++);
    
     delete image;
 }
@@ -321,13 +330,6 @@ void generatePlayers(){
 
 void displayPlayersRaquets(){
   for (int i = 0; i < 2; i++){
-      
-      glBindTexture(GL_TEXTURE_2D, texName[5]);
-      glPushMatrix();
-      glTranslatef(-2.0f, 0.0f, 0);
-      glutSolidTeapot(1.0);
-      glPopMatrix();
-      
     players[i].getRaquet().display();
   }
 }
@@ -376,10 +378,10 @@ bool collide(float ball_x, float ball_y, float player_x, float player_y, int pla
   float ball_x_right = ball_x + (1 * .2);
   float ball_y_down = ball_y - (1 * .2);
   float ball_y_top = ball_y + (1 * .2);
-  float player_x_left = player_x - (1 * .3);
-  float player_x_right = player_x + (1 * .3);
-  float player_y_down = player_y - (1 * .3);
-  float player_y_top = player_y + (1 * .3);
+  float player_x_left = player_x - (1 * .7);
+  float player_x_right = player_x + (1 * .7);
+  float player_y_down = player_y - (1 * .7);
+  float player_y_top = player_y + (1 * .7);
   // std::cout << "ball: " << ball_x_left << ", " << ball_x_right << ", " << ball_y_down << ", " << ball_y_top << "player: " << player_x_left << ", " << player_x_right << ", " << player_y_down << ", " << player_y_top << std::endl;
   bool col = ((ball_y_top >= player_y_down && ball_y_down <= player_y_top) && (ball_x_right >= player_x_left && ball_x_left <= player_x_right));
   if (col){
@@ -407,7 +409,6 @@ void displayBall(){
       ball.setDirectionX(0);
     }
   }
-  ball.display();
   ball.displayScore();
 }
 
@@ -466,6 +467,15 @@ void displayInicio2(){
 }
 
 void display(){
+  glEnable(GL_TEXTURE_2D);
+    //glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_NORMAL_MAP);
+    //glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_NORMAL_MAP);
+    //    glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+    //    glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+    glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+    glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+    //  glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
+    //  glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
   glPushMatrix();
   glRotatef(ball.getXTranslate() / 10, 0, 1, 0);
   // glRotatef(ball.getYTranslate() / -10, 1, 0, 0);
@@ -484,6 +494,38 @@ void display(){
     displayTable();
     displayPlayersRaquets();
     displayBall();
+      glEnable(GL_TEXTURE_GEN_S);
+      glEnable(GL_TEXTURE_GEN_T);
+      glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
+      glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
+      if (ball.getDirectionX() == 0){
+          glBindTexture(GL_TEXTURE_2D, texName[0]);
+      } else {
+          glBindTexture(GL_TEXTURE_2D, texName[7]);
+      }
+      glPushMatrix();
+      glTranslatef(ball.getXTranslate(), ball.getYTranslate(), 0);
+      glScalef(ball.getScale(), ball.getScale(), 0);
+      glutSolidSphere(1, 20, 20);
+      glPopMatrix();
+      glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
+      glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
+      glBindTexture(GL_TEXTURE_2D, texName[6]);
+      glPushMatrix();
+      glTranslatef(players[0].getRaquet().getXTranslate(), players[0].getRaquet().getYTranslate(), 0);
+      glScalef(.7, 2, 0.1);
+      glutSolidCube(1.0);
+      glPopMatrix();
+      glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
+      glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
+      glBindTexture(GL_TEXTURE_2D, texName[5]);
+      glPushMatrix();
+      glTranslatef(players[1].getRaquet().getXTranslate(), players[1].getRaquet().getYTranslate(), 0);
+      glScalef(.7, 2, 0.1);
+      glutSolidCube(1.0);
+      glPopMatrix();
+      glDisable(GL_TEXTURE_GEN_S);
+      glDisable(GL_TEXTURE_GEN_T);
   }
   glutSwapBuffers();
   glPopMatrix();
@@ -641,6 +683,7 @@ void reshape(int w, int h){
   glViewport(0, 0, w, h);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
+  // gluPerspective(45.0, (float)w / (float)h, 1.0, 200.0);
   // glOrtho(-4.0, 4.0, -4.0, 4.0, 1.0, 4.0);
   glFrustum(-4.0, 4.0, -4.0, 4.0, 1.0, 4.0);
   glMatrixMode(GL_MODELVIEW);
