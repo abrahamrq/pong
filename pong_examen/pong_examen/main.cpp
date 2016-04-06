@@ -220,8 +220,9 @@ bool paused = false, started = false;
 Player players[2];
 Ball ball;
 std::string fullPath = __FILE__;
-const int TEXTURE_COUNT=1;
+const int TEXTURE_COUNT=7;
 static GLuint texName[TEXTURE_COUNT];
+float vertical = 0.0;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -283,6 +284,18 @@ void initRendering()
     glGenTextures(TEXTURE_COUNT, texName); //Make room for our texture
     char  ruta[200];
     sprintf(ruta,"%s%s", fullPath.c_str() , "texturas/burger.bmp");
+    image = loadBMP(ruta);loadTexture(image,i++);
+    sprintf(ruta,"%s%s", fullPath.c_str() , "texturas/pasto.bmp");
+    image = loadBMP(ruta);loadTexture(image,i++);
+    sprintf(ruta,"%s%s", fullPath.c_str() , "texturas/inicio1.bmp");
+    image = loadBMP(ruta);loadTexture(image,i++);
+    sprintf(ruta,"%s%s", fullPath.c_str() , "texturas/inicio2.bmp");
+    image = loadBMP(ruta);loadTexture(image,i++);
+     sprintf(ruta,"%s%s", fullPath.c_str() , "texturas/Fondo.bmp");
+    image = loadBMP(ruta);loadTexture(image,i++);
+    sprintf(ruta,"%s%s", fullPath.c_str() , "texturas/RaquetaNino.bmp");
+    image = loadBMP(ruta);loadTexture(image,i++);
+    sprintf(ruta,"%s%s", fullPath.c_str() , "texturas/RaquetaNina.bmp");
     image = loadBMP(ruta);loadTexture(image,i++);
    
     delete image;
@@ -367,8 +380,9 @@ void displayBall(){
 
 void display(){
   glPushMatrix();
+  glRotatef(vertical, 0.0, 0.0, 1.0);
   glRotatef(ball.getXTranslate() / 10, 0, 1, 0);
-  glRotatef(ball.getYTranslate() / -10, 1, 0, 0);
+  // glRotatef(ball.getYTranslate() / -10, 1, 0, 0);
   glClear(GL_COLOR_BUFFER_BIT);
   displayTable();
   displayPlayersRaquets();
@@ -380,15 +394,35 @@ void display(){
 void specialActions(int key, int x, int y){
   switch (key) {
     case GLUT_KEY_DOWN:
-      if (started && !paused){
-        players[1].moveDown(.2);
-        glutPostRedisplay();
+      if (vertical == 0){
+        if (started && !paused){
+          players[1].moveDown(.2);
+          glutPostRedisplay();
+        }
       }
       break;
     case GLUT_KEY_UP:
-      if (started && !paused){
-        players[1].moveUp(.2);
-        glutPostRedisplay();
+      if (vertical == 0){
+        if (started && !paused){
+          players[1].moveUp(.2);
+          glutPostRedisplay();
+        }
+      }
+      break;
+    case GLUT_KEY_LEFT:
+      if (vertical == 90){
+        if (started && !paused){
+          players[1].moveUp(.2);
+          glutPostRedisplay();
+        }
+      }
+      break;
+    case GLUT_KEY_RIGHT:
+      if (vertical == 90){
+        if (started && !paused){
+          players[1].moveDown(.2);
+          glutPostRedisplay();
+        }
       }
       break;
   }
@@ -429,16 +463,46 @@ void keyboardActions(unsigned char theKey, int mouseX, int mouseY){
       break;
     case 'w':
     case 'W':
-      if (started && !paused){
-        players[0].moveUp(.2);
-        glutPostRedisplay();
+      if (vertical == 0) {
+        if (started && !paused){
+          players[0].moveUp(.2);
+          glutPostRedisplay();
+        }
       }
       break;
     case 's':
     case 'S':
-      if (started && !paused){
-        players[0].moveDown(.2);
-        glutPostRedisplay();
+      if (vertical == 0) {
+        if (started && !paused){
+          players[0].moveDown(.2);
+          glutPostRedisplay();
+        }
+      }
+      break;
+    case 'a':
+    case 'A':
+      if (vertical == 90) {
+        if (started && !paused){
+          players[0].moveUp(.2);
+          glutPostRedisplay();
+        }
+      }
+      break;
+    case 'd':
+    case 'D':
+      if (vertical == 90) {
+        if (started && !paused){
+          players[0].moveDown(.2);
+          glutPostRedisplay();
+        }
+      }
+      break;
+    case 'c':
+    case 'C':
+      if (vertical == 0){
+        vertical = 90;
+      } else {
+        vertical = 0;
       }
       break;
     case 27:
