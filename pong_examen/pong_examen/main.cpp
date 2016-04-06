@@ -95,6 +95,7 @@ class Ball{
     double y_translate;
     double speed_x;
     double speed_y;
+    double scale;
     int direction_x;
     int direction_y;
     int player_left_score;
@@ -110,6 +111,7 @@ class Ball{
       direction_y = 0;
       player_left_score = 0;
       player_right_score = 0;
+      scale = 0.2;
     }
     
     Ball(double x_translate, double y_translate, double speed_x, double speed_y, int direction_x, int direction_y, int player_left_score, int player_right_score){
@@ -121,12 +123,15 @@ class Ball{
       this->direction_y = direction_y;
       this->player_right_score = player_right_score;
       this->player_left_score = player_left_score;
+      this->scale = 0.2;
     }
     
     double getXTranslate() { return this->x_translate; }
     void setXTranslate(double x_translate) { this->x_translate = x_translate; }
     double getYTranslate() { return this->y_translate; }
     void setYTranslate(double y_translate) { this->y_translate = y_translate; }
+    double getScale() { return this->scale; }
+    void setScale(double scale) { this->scale = scale; }
     double getSpeedX() { return this->speed_x; }
     void setSpeedX(double speed_x) { this->speed_x = speed_x; }
     double getSpeedY() { return this->speed_y; }
@@ -143,7 +148,7 @@ class Ball{
     void display(){
       glPushMatrix();
       glTranslated(this->x_translate, this->y_translate, 0);
-      glScalef(0.2, 0.2, 0);
+      glScalef(this->scale, this->scale, 0);
       glColor3ub(255, 255, 255);
       glutSolidSphere(1, 20, 20);
       glPopMatrix();
@@ -182,6 +187,9 @@ class Ball{
     }
     
     void move(){
+      if (this->scale < 0.2){
+        this->scale += 0.05;
+      }
       if (this->direction_x == 0){
         this->x_translate += this->speed_x;
       } else {
@@ -352,6 +360,7 @@ bool collide(float ball_x, float ball_y, float player_x, float player_y, int pla
   // std::cout << "ball: " << ball_x_left << ", " << ball_x_right << ", " << ball_y_down << ", " << ball_y_top << "player: " << player_x_left << ", " << player_x_right << ", " << player_y_down << ", " << player_y_top << std::endl;
   bool col = ((ball_y_top >= player_y_down && ball_y_down <= player_y_top) && (ball_x_right >= player_x_left && ball_x_left <= player_x_right));
   if (col){
+    ball.setScale(0.05);
     // ping.PlaySound();
   }
   return col;
