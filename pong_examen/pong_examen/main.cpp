@@ -13,10 +13,10 @@
 #include <iostream>
 #include <sstream>
 #include "imageloader.h"
-#include "Sound.h"
+// #include "Sound.h"
 
 
-Sound die = Sound("/Users/taniagarridosalido/Dropbox/ITESM-ITC Decimo Semestre/Graficas/pong/pong_examen/pong_examen/sounds/die.wav");
+// Sound die = Sound("/Users/taniagarridosalido/Dropbox/ITESM-ITC Decimo Semestre/Graficas/pong/pong_examen/pong_examen/sounds/die.wav");
 
 ///////////////////////////////////CLASSES//////////////////////////////////////
 class Raquet{
@@ -149,7 +149,7 @@ class Ball{
       glPushMatrix();
       glTranslated(this->x_translate, this->y_translate, 0);
       glScalef(this->scale, this->scale, 0);
-      glColor3ub(255, 255, 255);
+      glColor3ub(0, 0, 0);
       glutSolidSphere(1, 20, 20);
       glPopMatrix();
     }
@@ -160,7 +160,7 @@ class Ball{
     }
     
     void resetPosition(){
-      die.PlaySound();
+      // die.PlaySound();
       this->x_translate = 0;
       this->y_translate = 0;
       this->speed_x = .01;
@@ -326,6 +326,22 @@ void displayPlayersRaquets(){
 }
 
 void displayTable(){
+  glBindTexture(GL_TEXTURE_2D, texName[1]);
+  glBegin(GL_QUADS);
+  //Asignar la coordenada de textura 0,0 al vertice
+  glTexCoord2f(0.0f, 0.0f);
+  glVertex3f(-3.8f, -3.8f, 0);
+  //Asignar la coordenada de textura 1,0 al vertice
+  glTexCoord2f(1.0f, 0.0f);
+  glVertex3f(3.8f, -3.8f, 0);
+  //Asignar la coordenada de textura 1,1 al vertice
+  glTexCoord2f(1.0f,1.0f);
+  glVertex3f(3.8f, 3.8f, 0);
+  //Asignar la coordenada de textura 0,1 al vertice
+  glTexCoord2f(0.0f, 1.0f);
+  glVertex3f(-3.8f, 3.8f, 0);
+  glEnd();
+
   glLineWidth(3);
   glColor3ub(0, 0, 0);
   glBegin(GL_LINES);
