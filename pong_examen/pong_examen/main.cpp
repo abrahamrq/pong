@@ -321,6 +321,13 @@ void generatePlayers(){
 
 void displayPlayersRaquets(){
   for (int i = 0; i < 2; i++){
+      
+      glBindTexture(GL_TEXTURE_2D, texName[5]);
+      glPushMatrix();
+      glTranslatef(-2.0f, 0.0f, 0);
+      glutSolidTeapot(1.0);
+      glPopMatrix();
+      
     players[i].getRaquet().display();
   }
 }
