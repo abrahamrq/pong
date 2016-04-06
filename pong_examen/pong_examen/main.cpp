@@ -13,10 +13,10 @@
 #include <iostream>
 #include <sstream>
 #include "imageloader.h"
-//#include "Sound.h"
+#include "Sound.h"
 
 
-//Sound die = Sound("/Users/taniagarridosalido/Dropbox/ITESM-ITC Decimo Semestre/Graficas/pong/pong_examen/pong_examen/sounds/die.wav");
+Sound die = Sound("/Users/taniagarridosalido/Dropbox/ITESM-ITC Decimo Semestre/Graficas/pong/pong_examen/pong_examen/sounds/die.wav");
 
 ///////////////////////////////////CLASSES//////////////////////////////////////
 class Raquet{
@@ -155,7 +155,7 @@ class Ball{
     }
     
     void resetPosition(){
-      //die.PlaySound();
+      die.PlaySound();
       this->x_translate = 0;
       this->y_translate = 0;
       this->speed_x = .01;
@@ -216,6 +216,7 @@ class Ball{
 };
 ////////////////////////////////////////////////////////////////////////////////
 
+bool inicio = true;
 bool paused = false, started = false;
 Player players[2];
 Ball ball;
@@ -378,13 +379,74 @@ void displayBall(){
   ball.displayScore();
 }
 
+void displayHome(){
+    glBindTexture(GL_TEXTURE_2D, texName[4]);
+    glBegin(GL_QUADS);
+    //Asignar la coordenada de textura 0,0 al vertice
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-5.0f, -5.0f, 0);
+    //Asignar la coordenada de textura 1,0 al vertice
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(5.0f, -5.0f, 0);
+    //Asignar la coordenada de textura 1,1 al vertice
+    glTexCoord2f(1.0f,1.0f);
+    glVertex3f(5.0f, 5.0f, 0);
+    //Asignar la coordenada de textura 0,1 al vertice
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-5.0f, 5.0f, 0);
+    glEnd();
+}
+
+void displayInicio(){
+    glBindTexture(GL_TEXTURE_2D, texName[3]);
+    glBegin(GL_QUADS);
+    //Asignar la coordenada de textura 0,0 al vertice
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-3.0f, -3.0f, 0);
+    //Asignar la coordenada de textura 1,0 al vertice
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(3.0f, -3.0f, 0);
+    //Asignar la coordenada de textura 1,1 al vertice
+    glTexCoord2f(1.0f,1.0f);
+    glVertex3f(3.0f, -1.0f, 0);
+    //Asignar la coordenada de textura 0,1 al vertice
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-3.0f, -1.0f, 0);
+    glEnd();
+}
+
+void displayInicio2(){
+    glBindTexture(GL_TEXTURE_2D, texName[2]);
+    glBegin(GL_QUADS);
+    //Asignar la coordenada de textura 0,0 al vertice
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-3.0f, -3.0f, 0);
+    //Asignar la coordenada de textura 1,0 al vertice
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(3.0f, -3.0f, 0);
+    //Asignar la coordenada de textura 1,1 al vertice
+    glTexCoord2f(1.0f,1.0f);
+    glVertex3f(3.0f, -1.0f, 0);
+    //Asignar la coordenada de textura 0,1 al vertice
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-3.0f, -1.0f, 0);
+    glEnd();
+}
+
 void display(){
   glPushMatrix();
   glRotatef(ball.getXTranslate() / 10, 0, 1, 0);
   // glRotatef(ball.getYTranslate() / -10, 1, 0, 0);
   glClear(GL_COLOR_BUFFER_BIT);
-  if (!start){
+  glColor3f(1.0, 1.0, 1.0);
+  if (!started){
     displayHome();
+      if (inicio){
+        displayInicio();
+      }
+      else{
+          displayInicio2();
+      }
   } else {
     glRotatef(vertical, 0.0, 0.0, 1.0);
     displayTable();
@@ -440,6 +502,31 @@ void play_game(int value){
   if (!paused){
     glutTimerFunc(100, play_game, 0);
   }
+}
+
+void passiveMotion(int x, int y){
+    if ((x < 420 && x > 80) && ( y > 310 && y < 420) ) {
+        if (inicio){
+            inicio = !inicio;
+        }
+    } else {
+        if (!inicio){
+            inicio =! inicio;
+        }
+    }
+    glutPostRedisplay();
+}
+
+void myMouseButton(int button, int state, int x, int y)
+{
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
+        if ((x < 420 && x > 80) && ( y > 310 && y < 420) ) {
+            if (!started){
+                started = true;
+                glutTimerFunc(100, play_game, 0);
+            }
+        }
+    }
 }
 
 void keyboardActions(unsigned char theKey, int mouseX, int mouseY){
@@ -547,14 +634,16 @@ int main(int argc, char** argv){
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
   glutInitWindowSize(500,500);
   glutInitWindowPosition(0,0);
-  glutCreateWindow("Pong A01195653 - A01138941");
   getParentPath();
-  initRendering();
+  glutCreateWindow("Pong A01195653 - A01138941");
   glutReshapeFunc(reshape);
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboardActions);
   glutSpecialFunc(specialActions);
+  glutPassiveMotionFunc(passiveMotion);
+  glutMouseFunc(myMouseButton);
   init();
+  initRendering();
   glutTimerFunc(1000,timer,0);
   glutMainLoop();
 }
