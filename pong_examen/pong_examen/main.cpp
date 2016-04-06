@@ -11,6 +11,10 @@
 #include <stdlib.h>
 #include <iostream>
 #include <sstream>
+#include "Sound.h"
+
+
+Sound die = Sound("/Users/taniagarridosalido/Dropbox/ITESM-ITC Decimo Semestre/Graficas/pong/pong_examen/pong_examen/sounds/die.wav");
 
 ///////////////////////////////////CLASSES//////////////////////////////////////
 class Raquet{
@@ -149,6 +153,7 @@ class Ball{
     }
     
     void resetPosition(){
+      die.PlaySound();
       this->x_translate = 0;
       this->y_translate = 0;
       this->speed_x = .01;
@@ -261,7 +266,11 @@ bool collide(float ball_x, float ball_y, float player_x, float player_y, int pla
   float player_y_down = player_y - (1 * .3);
   float player_y_top = player_y + (1 * .3);
   // std::cout << "ball: " << ball_x_left << ", " << ball_x_right << ", " << ball_y_down << ", " << ball_y_top << "player: " << player_x_left << ", " << player_x_right << ", " << player_y_down << ", " << player_y_top << std::endl;
-  return ((ball_y_top >= player_y_down && ball_y_down <= player_y_top) && (ball_x_right >= player_x_left && ball_x_left <= player_x_right));
+  bool col = ((ball_y_top >= player_y_down && ball_y_down <= player_y_top) && (ball_x_right >= player_x_left && ball_x_left <= player_x_right));
+  if (col){
+    ping.PlaySound();
+  }
+  return col;
 }
 
 bool collision(){

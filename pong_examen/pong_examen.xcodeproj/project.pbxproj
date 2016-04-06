@@ -10,6 +10,8 @@
 		DD4357AF1CB485B500205A7F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD4357AE1CB485B500205A7F /* main.cpp */; };
 		DD4357B71CB4860D00205A7F /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD4357B51CB4860D00205A7F /* GLUT.framework */; };
 		DD4357B81CB4860D00205A7F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD4357B61CB4860D00205A7F /* OpenGL.framework */; };
+		DD4357BB1CB49E6F00205A7F /* Sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD4357BA1CB49E6F00205A7F /* Sound.cpp */; };
+		DD4357C11CB4A04E00205A7F /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD4357C01CB4A04E00205A7F /* OpenAL.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +31,12 @@
 		DD4357AE1CB485B500205A7F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		DD4357B51CB4860D00205A7F /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		DD4357B61CB4860D00205A7F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		DD4357B91CB49E5B00205A7F /* Sound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sound.h; sourceTree = "<group>"; };
+		DD4357BA1CB49E6F00205A7F /* Sound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sound.cpp; sourceTree = "<group>"; };
+		DD4357BD1CB49EA900205A7F /* die.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = die.wav; sourceTree = "<group>"; };
+		DD4357BE1CB49EA900205A7F /* ping.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ping.wav; sourceTree = "<group>"; };
+		DD4357BF1CB4A01B00205A7F /* sonido.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = sonido.1; sourceTree = "<group>"; };
+		DD4357C01CB4A04E00205A7F /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD4357C11CB4A04E00205A7F /* OpenAL.framework in Frameworks */,
 				DD4357B71CB4860D00205A7F /* GLUT.framework in Frameworks */,
 				DD4357B81CB4860D00205A7F /* OpenGL.framework in Frameworks */,
 			);
@@ -47,6 +56,7 @@
 		DD4357A21CB485B500205A7F = {
 			isa = PBXGroup;
 			children = (
+				DD4357C01CB4A04E00205A7F /* OpenAL.framework */,
 				DD4357B51CB4860D00205A7F /* GLUT.framework */,
 				DD4357B61CB4860D00205A7F /* OpenGL.framework */,
 				DD4357AD1CB485B500205A7F /* pong_examen */,
@@ -66,8 +76,21 @@
 			isa = PBXGroup;
 			children = (
 				DD4357AE1CB485B500205A7F /* main.cpp */,
+				DD4357B91CB49E5B00205A7F /* Sound.h */,
+				DD4357BA1CB49E6F00205A7F /* Sound.cpp */,
+				DD4357BF1CB4A01B00205A7F /* sonido.1 */,
+				DD4357BC1CB49EA900205A7F /* sounds */,
 			);
 			path = pong_examen;
+			sourceTree = "<group>";
+		};
+		DD4357BC1CB49EA900205A7F /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				DD4357BD1CB49EA900205A7F /* die.wav */,
+				DD4357BE1CB49EA900205A7F /* ping.wav */,
+			);
+			path = sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,6 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD4357AF1CB485B500205A7F /* main.cpp in Sources */,
+				DD4357BB1CB49E6F00205A7F /* Sound.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +269,7 @@
 				DD4357B41CB485B500205A7F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
